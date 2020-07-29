@@ -99,7 +99,7 @@ class CommentSectionFragment : Fragment(), CommentSectionNavigator {
                     galleryData.id
                 )
             } else {
-                Toast.makeText(activity, getString(R.string.invalid_comment), Toast.LENGTH_LONG)
+                Toast.makeText(activity, getString(R.string.enter_all_fields), Toast.LENGTH_LONG)
                     .show()
             }
         }

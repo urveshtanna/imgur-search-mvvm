@@ -114,7 +114,9 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Log.d("SEARCH_QUERY", it)
-                mainSearchViewModel.getGalleryFromSearchQuery(it)
+                if (it != null && !it.trim().isEmpty()) {
+                    mainSearchViewModel.getGalleryFromSearchQuery(it)
+                }
             }, {
                 Log.e("Error", it.message.toString())
             })
