@@ -1,11 +1,14 @@
 package com.urveshtanna.imgur.data.model
 
+import android.os.Parcelable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
+@Parcelize
 data class GalleryData(
     @SerializedName("id")
     val id: String? = null,
@@ -15,7 +18,7 @@ data class GalleryData(
     val description: String? = null,
     @SerializedName("images")
     val images: List<ImageData> = ArrayList()
-) {
+) : Parcelable {
 
     fun getImageUrl(): String? {
         if (images.size > 0 && images.get(0).link != null) {

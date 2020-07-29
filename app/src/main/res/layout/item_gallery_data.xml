@@ -21,6 +21,7 @@
             android:layout_height="100dp"
             bind:imageUrl="@{model.imageUrl}"
             android:layout_gravity="center"
+            android:transitionName="@string/gallery_preview_transition_name"
             android:contentDescription="@string/image_preview" />
 
         <androidx.appcompat.widget.AppCompatTextView

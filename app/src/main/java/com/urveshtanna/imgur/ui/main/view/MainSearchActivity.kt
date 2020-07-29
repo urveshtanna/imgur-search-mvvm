@@ -1,26 +1,27 @@
 package com.urveshtanna.imgur.ui.main.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.urveshtanna.imgur.R
 import com.urveshtanna.imgur.data.api.APIHelper
 import com.urveshtanna.imgur.data.api.APIServiceImpl
 import com.urveshtanna.imgur.data.model.GalleryData
 import com.urveshtanna.imgur.databinding.ActivityMainSearchBinding
 import com.urveshtanna.imgur.ui.base.ViewModelFactory
+import com.urveshtanna.imgur.ui.gallerydetails.view.GalleryDetailsActivity
 import com.urveshtanna.imgur.ui.main.adapter.MainSearchResultAdapter
 import com.urveshtanna.imgur.ui.main.navigator.MainSearchNavigator
 import com.urveshtanna.imgur.ui.main.viewmodel.MainSearchViewModel
+
 
 class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
 
@@ -62,7 +63,9 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
 
     private fun setupUI() {
         binding.searchResultRecyclerview.layoutManager = GridLayoutManager(this, 3)
-        adapter = MainSearchResultAdapter(arrayListOf())
+        adapter = MainSearchResultAdapter(arrayListOf(), { galleryData, view ->
+            openImageDetailsScreen(galleryData, view)
+        })
         binding.searchResultRecyclerview.adapter = adapter;
     }
 
@@ -75,7 +78,7 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
         adapter.notifyDataSetChanged()
     }
 
-    override fun openImageDetailsScreen() {
-        Log.e("ERROR", "Navigate To Image Details Screen")
+    override fun openImageDetailsScreen(galleryData: GalleryData, view: View) {
+        GalleryDetailsActivity.newInstance(galleryData, view, this)
     }
 }

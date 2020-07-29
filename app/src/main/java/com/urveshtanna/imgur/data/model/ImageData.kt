@@ -1,7 +1,10 @@
 package com.urveshtanna.imgur.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ImageData(
     @SerializedName("id")
     val id : String? = null,
@@ -13,4 +16,4 @@ data class ImageData(
     val type : String? = null,
     @SerializedName("link")
     val link : String? = null
-)
+) : Parcelable
