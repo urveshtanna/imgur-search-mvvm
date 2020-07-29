@@ -1,6 +1,9 @@
 package com.urveshtanna.imgur.data.model
 
 import android.os.Parcelable
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -16,4 +19,18 @@ data class ImageData(
     val type : String? = null,
     @SerializedName("link")
     val link : String? = null
-) : Parcelable
+) : Parcelable{
+
+    companion object {
+
+        @BindingAdapter("imageUrl")
+        @JvmStatic
+        fun loadImage(imageView: ImageView, imgUrl: String?) {
+            if (imgUrl != null) {
+                Glide.with(imageView.getContext()).load(imgUrl).into(imageView)
+            }
+        }
+
+    }
+
+}

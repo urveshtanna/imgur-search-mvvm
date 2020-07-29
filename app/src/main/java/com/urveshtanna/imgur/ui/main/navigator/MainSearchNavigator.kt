@@ -7,6 +7,8 @@ interface MainSearchNavigator {
 
     fun handleError(throwable: Throwable)
 
+    fun loadNewData(galleryData: List<GalleryData>)
+
     fun loadData(galleryData: List<GalleryData>)
 
     fun openImageDetailsScreen(galleryData: GalleryData, view: View)

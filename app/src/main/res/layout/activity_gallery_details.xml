@@ -2,32 +2,37 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".ui.gallerydetails.view.GalleryDetailsActivity">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/img_preview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="264dp"
-            android:transitionName="@string/gallery_preview_transition_name" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".ui.gallerydetails.view.GalleryDetailsActivity">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/image_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="264dp" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/image_recyclerview"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-    </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/tv_description"
+                android:id="@+id/comment_fragment"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>

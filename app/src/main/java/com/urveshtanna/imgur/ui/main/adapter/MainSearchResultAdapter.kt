@@ -40,4 +40,9 @@ class MainSearchResultAdapter(private val galleryData: ArrayList<GalleryData>,
         galleryData.addAll(newGalleryData)
     }
 
+    fun addNewData(newGalleryData: List<GalleryData>){
+        galleryData.clear()
+        galleryData.addAll(newGalleryData)
+    }
+
 }
