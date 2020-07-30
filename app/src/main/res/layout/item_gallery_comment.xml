@@ -8,6 +8,8 @@
         <variable
             name="model"
             type="com.urveshtanna.imgur.data.model.Comment" />
+
+        <import type="com.urveshtanna.imgur.ui.utils.DateFormatter" />
     </data>
 
 
@@ -43,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{model.createdAt.toString()}"
+            android:text="@{DateFormatter.getFormattedDate(model.createdAt, DateFormatter.DATE_FORMAT_DAY_HOURS)}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             tools:text="Comment" />
 
