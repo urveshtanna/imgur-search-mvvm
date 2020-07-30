@@ -10,9 +10,8 @@ class APIServiceImpl : APIService {
 
     private val BASE_URL = "https://api.imgur.com/3"
 
-    override fun getSearchResult(query: String?, accessToken : String?): Single<SearchResponse> {
-        AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BASIC)
-        return Rx2AndroidNetworking.get("$BASE_URL/gallery/search/1?q=$query")
+    override fun getSearchResult(query: String?, accessToken : String?, page: Int): Single<SearchResponse> {
+        return Rx2AndroidNetworking.get("$BASE_URL/gallery/search/$page?q=$query")
             .addHeaders("Authorization", accessToken)
             .build()
             .getObjectSingle(SearchResponse::class.java)

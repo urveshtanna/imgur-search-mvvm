@@ -12,13 +12,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.RecyclerView
 import com.androidnetworking.error.ANError
 import com.urveshtanna.imgur.R
 import com.urveshtanna.imgur.data.local.DataManager
-import com.urveshtanna.imgur.data.local.db.AppDatabase
 import com.urveshtanna.imgur.data.model.GalleryData
 import com.urveshtanna.imgur.data.remote.APIHelper
 import com.urveshtanna.imgur.data.remote.APIServiceImpl
@@ -65,7 +65,37 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
         adapter = MainSearchResultAdapter(arrayListOf(), { galleryData, view ->
             openImageDetailsScreen(galleryData, view)
         })
-        binding.searchResultRecyclerview.adapter = adapter;
+        binding.searchResultRecyclerview.adapter = adapter
+        (binding.searchResultRecyclerview.layoutManager as GridLayoutManager).spanSizeLookup =
+            object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == adapter.ITEM_TYPE_LOADER) 3 else 1
+                }
+            }
+        binding.searchResultRecyclerview.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager: GridLayoutManager? =
+                    recyclerView.layoutManager as GridLayoutManager?
+
+                if (!mainSearchViewModel.isRecyclerViewLoading && mainSearchViewModel.hasMoreSearchResultData && linearLayoutManager != null) {
+                    val visibleItemCount: Int = linearLayoutManager.getChildCount()
+                    val totalItemCount: Int = linearLayoutManager.getItemCount()
+                    val firstVisibleItemPosition: Int =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+                    if (firstVisibleItemPosition + visibleItemCount >= totalItemCount) {
+                        //End of list
+                        loadMore()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun loadMore() {
+        mainSearchViewModel.isRecyclerViewLoading = true
+        mainSearchViewModel.getGalleryFromSearchQuery(searchView?.query.toString())
     }
 
     override fun handleError(error: Throwable) {
@@ -82,22 +112,24 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
                     .show()
             }
         } else {
-            // error.getErrorDetail() : connectionError, parseError, requestCancelledError or any other error
             Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
         }
     }
 
     override fun loadNewData(galleryData: List<GalleryData>) {
-        if (galleryData.size == 0) {
-            Toast.makeText(this, getString(R.string.no_result_found), Toast.LENGTH_LONG).show()
-        }
+        Log.d(this::class.simpleName, "New Search Result Count " + galleryData.size.toString())
         adapter.addNewData(galleryData)
         adapter.notifyDataSetChanged()
     }
 
     override fun loadData(galleryData: List<GalleryData>) {
+        Log.d(this::class.simpleName, "More Search Result Count " + galleryData.size.toString())
         adapter.addData(galleryData)
         adapter.notifyDataSetChanged()
+        Log.d(
+            this::class.simpleName,
+            "Search Result Adapter Item Count " + adapter.itemCount.toString()
+        )
     }
 
     @SuppressLint("CheckResult")
@@ -114,12 +146,15 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("SEARCH_QUERY", it)
+                Log.d(this::class.simpleName, it)
                 if (it != null && !it.trim().isEmpty()) {
+                    mainSearchViewModel.resetPaginationValues()
                     mainSearchViewModel.getGalleryFromSearchQuery(it)
                 }
             }, {
-                Log.e("Error", it.message.toString())
+                Log.d(this::class.simpleName, it.message.toString())
+                Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG)
+                    .show()
             })
 
         if (currentQuery != null && !currentQuery?.isEmpty()!!) {
@@ -133,8 +168,10 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        currentQuery = searchView?.query.toString()
-        outState.putString(SAVED_SEARCH_QUERY, currentQuery)
+        if (searchView != null && searchView?.query != null) {
+            currentQuery = searchView?.query.toString()
+            outState.putString(SAVED_SEARCH_QUERY, currentQuery)
+        }
     }
 
     override fun openImageDetailsScreen(galleryData: GalleryData, view: View) {
