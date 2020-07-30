@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.urveshtanna.imgur.R
+import com.urveshtanna.imgur.data.local.DataManager
 import com.urveshtanna.imgur.data.local.db.AppDatabase
 import com.urveshtanna.imgur.data.model.Comment
 import com.urveshtanna.imgur.data.model.GalleryData
@@ -69,10 +70,7 @@ class CommentSectionFragment : Fragment(), CommentSectionNavigator {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(
-                APIHelper(APIServiceImpl()),
-                activity?.let { it1 -> AppDatabase.getInstance(it1) }!!
-            )
+            ViewModelFactory(APIHelper(APIServiceImpl()), DataManager(binding.content.context))
         ).get(CommentSectionViewModel::class.java)
         binding.viewModel = viewModel
         viewModel.setNavigator(this)

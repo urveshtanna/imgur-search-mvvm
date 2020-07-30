@@ -1,5 +1,6 @@
 package com.urveshtanna.imgur.ui.comment.viewmodel
 
+import com.urveshtanna.imgur.data.local.DataManager
 import com.urveshtanna.imgur.data.local.db.AppDBHelper
 import com.urveshtanna.imgur.data.model.Comment
 import com.urveshtanna.imgur.ui.base.BaseViewModel
@@ -8,9 +9,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class CommentSectionViewModel(val appDBHelper: AppDBHelper) :
+class CommentSectionViewModel(dataManager: DataManager) :
     BaseViewModel<CommentSectionNavigator>() {
 
+    val appDBHelper = AppDBHelper(dataManager.appDatabase)
 
     fun getComments(galleryId: String) {
         setIsLoading(true)

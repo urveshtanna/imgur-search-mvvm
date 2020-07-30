@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.androidnetworking.error.ANError
 import com.urveshtanna.imgur.R
+import com.urveshtanna.imgur.data.local.DataManager
 import com.urveshtanna.imgur.data.local.db.AppDatabase
 import com.urveshtanna.imgur.data.model.GalleryData
 import com.urveshtanna.imgur.data.remote.APIHelper
@@ -53,7 +54,7 @@ class MainSearchActivity : AppCompatActivity(), MainSearchNavigator {
     private fun setupViewModel() {
         mainSearchViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(APIHelper(APIServiceImpl()), AppDatabase.getInstance(this)!!)
+            ViewModelFactory(APIHelper(APIServiceImpl()), DataManager(this))
         ).get(MainSearchViewModel::class.java)
         binding.viewModel = mainSearchViewModel
         mainSearchViewModel.setNavigator(this)

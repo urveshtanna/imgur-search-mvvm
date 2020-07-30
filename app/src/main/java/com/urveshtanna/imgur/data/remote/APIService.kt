@@ -5,6 +5,6 @@ import io.reactivex.Single
 
 interface APIService {
 
-    fun getSearchResult(query: String?): Single<SearchResponse>
+    fun getSearchResult(query: String?, accessToken: String?): Single<SearchResponse>
 
 }

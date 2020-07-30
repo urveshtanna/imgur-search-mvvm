@@ -6,8 +6,8 @@ import io.reactivex.Single
 
 class SearchGalleryRepository(private val apiHelper: APIHelper) {
 
-    fun getSearchResult(query: String?): Single<SearchResponse> {
-        return apiHelper.getSearchResult(query)
+    fun getSearchResult(query: String?, accessToken: String?): Single<SearchResponse> {
+        return apiHelper.getSearchResult(query, accessToken)
     }
 
 }
