@@ -14,11 +14,5 @@ A simple android app that uses [Imgur's gallery search api](https://apidocs.imgu
 - Using Rxjava, Glide and Android arch component's lifecycle library
 - Also last not the least it also support Dark Mode ;) Dark Mode is enabled either if battery saver is on or by switching the mode in device settings (Android 10 and above).
 
-<br>
-<br>
-<br>
-<br>
-<br>
-
 <img src="https://github.com/urveshtanna/Imgur-search-mvvm/blob/master/screenshots/screenshot_2.png"  width="300" align="left" hspace="40"/>
 <img src="https://github.com/urveshtanna/Imgur-search-mvvm/blob/master/screenshots/screenshot_3.png" width="300" align="right" hspace="40" />
