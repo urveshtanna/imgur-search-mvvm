@@ -84,7 +84,9 @@ class MainSearchResultAdapter(
     fun addNewData(newGalleryData: List<GalleryData>) {
         galleryData.clear()
         galleryData.addAll(newGalleryData)
-        addLoader()
+        if (newGalleryData.size != 0) {
+            addLoader()
+        }
     }
 
     fun addLoader() {

@@ -7,7 +7,7 @@ class AppDataSharePrefImpl(context: Context) : AppDataSharedPrefInterface {
 
     private val PREF_KEY_CLIENT_TOKEN = "PREF_KEY_CLIENT_TOKEN"
     private val PREF_NAME = "imgur_search_pref"
-    var mPrefs: SharedPreferences
+    private var mPrefs: SharedPreferences
 
     init {
         mPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
